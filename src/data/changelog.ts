@@ -9,6 +9,11 @@ export interface Entry {
 export const changelog: Entry[] = [
   {
     date: '2026-10-10',
+    'pt-br': 'Organização squadworks-ai no GitHub; código do site publicado em github.com/squadworks-ai/site.',
+    en: 'squadworks-ai organization on GitHub; site source published at github.com/squadworks-ai/site.',
+  },
+  {
+    date: '2026-10-10',
     'pt-br': 'Página de mudanças, data de fundação e dados estruturados da organização publicados no site.',
     en: 'Changelog page, founding date and structured organization data published on the site.',
   },

@@ -6,5 +6,5 @@ export const org = {
   email: 'contato@squadworks.com.br',
   foundingDate: '2026-10',
   logo: 'https://squadworks.com.br/apple-touch-icon.png',
-  sameAs: [] as string[],
+  sameAs: ['https://github.com/squadworks-ai'] as string[],
 };
