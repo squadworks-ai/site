@@ -29,6 +29,8 @@ const jsonLd = JSON.stringify({
   foundingDate: org.foundingDate,
   description: s.meta.description,
   areaServed: 'BR',
+  foundingLocation: { '@type': 'Country', name: org.foundingLocation },
+  founder: { '@type': 'Person', name: org.founder.name, ...(org.founder.sameAs.length ? { sameAs: org.founder.sameAs } : {}) },
   ...(org.sameAs.length ? { sameAs: org.sameAs } : {}),
 });
 const ogImage = new URL(lang === 'pt-br' ? '/og.png' : '/og-en.png', site).href;

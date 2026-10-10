@@ -29,6 +29,7 @@ const ptBR = {
     how: 'Como funciona',
     factory: 'A fábrica',
     example: 'Exemplo',
+    about: 'Sobre',
     cta: 'Começar',
     ctaShort: 'Começar',
     switchLabel: 'Switch to English',
@@ -178,6 +179,19 @@ const ptBR = {
 + });`,
     prChecks: ['142 testes', '0 críticos', 'revisão por agentes', 'canary ok'],
   },
+  about: {
+    eyebrow: '05 · Sobre',
+    title: 'Quem faz a Squadworks.',
+    text: 'Fundada em outubro de 2026 por Leandro Harfuch, no Brasil. A fábrica é construída sobre os modelos Claude, da Anthropic. O que é público fica na organização no GitHub e no registro de mudanças, com data.',
+    facts: [
+      { k: 'Fundação', v: 'Outubro de 2026' },
+      { k: 'Fundador', v: 'Leandro Harfuch', href: 'https://github.com/lharfuch' },
+      { k: 'Base', v: 'Brasil' },
+      { k: 'GitHub', v: 'github.com/squadworks-ai', href: 'https://github.com/squadworks-ai' },
+      { k: 'Mudanças', v: 'squadworks.com.br/mudancas', href: '/mudancas/' },
+      { k: 'Contato', v: 'contato@squadworks.com.br', href: 'mailto:contato@squadworks.com.br' },
+    ],
+  },
   cta: {
     eyebrow: 'Comece hoje',
     title: 'Mande o link do app ou conte a ideia. Em poucos dias você sabe o que falta para ir ao ar.',
@@ -218,6 +232,7 @@ const en: typeof ptBR = {
     how: 'How it works',
     factory: 'The factory',
     example: 'Example',
+    about: 'About',
     cta: 'Start',
     ctaShort: 'Start',
     switchLabel: 'Mudar para português',
@@ -366,6 +381,19 @@ const en: typeof ptBR = {
 +   expect(r.data).toHaveLength(0);
 + });`,
     prChecks: ['142 tests', '0 critical', 'agent review', 'canary ok'],
+  },
+  about: {
+    eyebrow: '05 · About',
+    title: 'Who makes Squadworks.',
+    text: 'Founded in October 2026 by Leandro Harfuch, in Brazil. The factory is built on Claude models by Anthropic. Whatever is public lives in the GitHub organization and in the dated changelog.',
+    facts: [
+      { k: 'Founded', v: 'October 2026' },
+      { k: 'Founder', v: 'Leandro Harfuch', href: 'https://github.com/lharfuch' },
+      { k: 'Based in', v: 'Brazil' },
+      { k: 'GitHub', v: 'github.com/squadworks-ai', href: 'https://github.com/squadworks-ai' },
+      { k: 'Changelog', v: 'squadworks.com.br/en/changelog', href: '/en/changelog/' },
+      { k: 'Contact', v: 'contato@squadworks.com.br', href: 'mailto:contato@squadworks.com.br' },
+    ],
   },
   cta: {
     eyebrow: 'Start today',

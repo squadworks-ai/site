@@ -2,7 +2,7 @@
 
 Landing page da Squadworks em Astro 7 + Tailwind 4, saída estática, em português (`/`) e inglês (`/en/`).
 
-A Squadworks é uma fábrica de software agêntica construída sobre os modelos Claude, da Anthropic. Este repositório é só o site; o núcleo da fábrica é privado.
+A Squadworks é uma fábrica de software agêntica construída sobre os modelos Claude, da Anthropic. Fundada em outubro de 2026 por [Leandro Harfuch](https://github.com/lharfuch), no Brasil. Este repositório é só o site; o núcleo da fábrica é privado.
 
 ## Rodar localmente
 

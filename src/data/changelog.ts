@@ -9,6 +9,11 @@ export interface Entry {
 export const changelog: Entry[] = [
   {
     date: '2026-10-10',
+    'pt-br': 'Seção Sobre publicada: fundada em outubro de 2026 por Leandro Harfuch, no Brasil.',
+    en: 'About section published: founded in October 2026 by Leandro Harfuch, in Brazil.',
+  },
+  {
+    date: '2026-10-10',
     'pt-br': 'O site passa a declarar a base técnica: a fábrica é construída sobre os modelos Claude, da Anthropic.',
     en: 'The site now states its technical base: the factory is built on Claude models by Anthropic.',
   },
