@@ -8,18 +8,18 @@ const { lang } = Astro.props;
 const a = t(lang).about;
 ---
 
-<section id="sobre" class="wrap grid gap-8 pb-24 md:grid-cols-[1fr_1fr] md:gap-12 md:pb-32">
+<section id="sobre" class="wrap grid grid-cols-1 gap-8 pb-24 md:grid-cols-2 md:gap-12 md:pb-32">
   <div class="flex max-w-[560px] flex-col gap-3.5">
     <p class="eyebrow text-amber">{a.eyebrow}</p>
     <h2 class="h2">{a.title}</h2>
     <p class="text-[17px] leading-[1.5] text-muted md:text-[18px]">{a.text}</p>
   </div>
-  <dl class="card divide-y divide-line p-0 self-start">
+  <dl class="card min-w-0 divide-y divide-line p-0 self-start">
     {
       a.facts.map((f) => (
         <div class="grid grid-cols-[110px_1fr] gap-4 px-5 py-3.5 md:grid-cols-[130px_1fr]">
           <dt class="label pt-[2px] text-muted">{f.k}</dt>
-          <dd class="text-[15px] break-words">
+          <dd class="min-w-0 text-[15px] [overflow-wrap:anywhere]">
             {f.href ? (
               <a href={f.href} class="underline decoration-line underline-offset-4 hover:decoration-ink">
                 {f.v}
