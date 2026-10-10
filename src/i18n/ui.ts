@@ -140,6 +140,7 @@ const ptBR = {
     eyebrow: '03 · A fábrica',
     title: 'O harness verifica. Você decide.',
     lead: 'Existem cinco níveis de autonomia no desenvolvimento com IA. Quase todo mercado parou no terceiro. A Squadworks é construída para o quinto.',
+    stack: 'Construída sobre os modelos Claude, da Anthropic. A esteira, os testes e os portões são da Squadworks.',
     rungs: [
       { n: '01', title: 'Manual', text: 'A IA não entra no código.' },
       { n: '02', title: 'Copiar e colar', text: 'Trechos do chat, um a um.' },
@@ -328,6 +329,7 @@ const en: typeof ptBR = {
     eyebrow: '03 · The factory',
     title: 'The harness verifies. You decide.',
     lead: 'There are five levels of autonomy in AI-assisted development. Most of the market stopped at the third. Squadworks is built for the fifth.',
+    stack: 'Built on Claude models by Anthropic. The line, the tests and the gates are Squadworks.',
     rungs: [
       { n: '01', title: 'Manual', text: 'AI never touches the code.' },
       { n: '02', title: 'Copy and paste', text: 'Snippets from the chat, one at a time.' },

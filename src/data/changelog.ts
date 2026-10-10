@@ -9,6 +9,11 @@ export interface Entry {
 export const changelog: Entry[] = [
   {
     date: '2026-10-10',
+    'pt-br': 'O site passa a declarar a base técnica: a fábrica é construída sobre os modelos Claude, da Anthropic.',
+    en: 'The site now states its technical base: the factory is built on Claude models by Anthropic.',
+  },
+  {
+    date: '2026-10-10',
     'pt-br': 'Organização squadworks-ai no GitHub; código do site publicado em github.com/squadworks-ai/site.',
     en: 'squadworks-ai organization on GitHub; site source published at github.com/squadworks-ai/site.',
   },
