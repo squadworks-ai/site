@@ -182,13 +182,11 @@ const ptBR = {
   about: {
     eyebrow: '05 · Sobre',
     title: 'Quem faz a Squadworks.',
-    text: 'Fundada em outubro de 2026 por Leandro Harfuch, no Brasil. A fábrica é construída sobre os modelos Claude, da Anthropic. O que é público fica na organização no GitHub e no registro de mudanças, com data.',
+    text: 'Fundada em outubro de 2026, no Brasil. A fábrica é construída sobre os modelos Claude, da Anthropic. O que é público fica na organização no GitHub.',
     facts: [
       { k: 'Fundação', v: 'Outubro de 2026' },
-      { k: 'Fundador', v: 'Leandro Harfuch', href: 'https://github.com/lharfuch' },
       { k: 'Base', v: 'Brasil' },
       { k: 'GitHub', v: 'squadworks-ai', href: 'https://github.com/squadworks-ai' },
-      { k: 'Mudanças', v: '/mudancas', href: '/mudancas/' },
       { k: 'Contato', v: 'contato@squadworks.com.br', href: 'mailto:contato@squadworks.com.br' },
     ],
   },
@@ -206,17 +204,6 @@ const ptBR = {
     copyright: '© 2026 Squadworks · squadworks.com.br',
     tagline: 'Fábrica de software agêntica',
     founded: 'Fundada em outubro de 2026',
-    changelog: 'Mudanças',
-  },
-  changelog: {
-    path: '/mudancas/',
-    title: 'Mudanças — Squadworks',
-    description: 'Registro público e datado do que a Squadworks publicou.',
-    eyebrow: 'Mudanças',
-    heading: 'O que mudou, com data.',
-    lead: 'Registro público do que a Squadworks publicou, da mudança mais recente para a mais antiga.',
-    note: 'Entram aqui só fatos públicos e verificáveis.',
-    back: 'Voltar ao início',
   },
 };
 
@@ -385,13 +372,11 @@ const en: typeof ptBR = {
   about: {
     eyebrow: '05 · About',
     title: 'Who makes Squadworks.',
-    text: 'Founded in October 2026 by Leandro Harfuch, in Brazil. The factory is built on Claude models by Anthropic. Whatever is public lives in the GitHub organization and in the dated changelog.',
+    text: 'Founded in October 2026, in Brazil. The factory is built on Claude models by Anthropic. Whatever is public lives in the GitHub organization.',
     facts: [
       { k: 'Founded', v: 'October 2026' },
-      { k: 'Founder', v: 'Leandro Harfuch', href: 'https://github.com/lharfuch' },
       { k: 'Based in', v: 'Brazil' },
       { k: 'GitHub', v: 'squadworks-ai', href: 'https://github.com/squadworks-ai' },
-      { k: 'Changelog', v: '/en/changelog', href: '/en/changelog/' },
       { k: 'Contact', v: 'contato@squadworks.com.br', href: 'mailto:contato@squadworks.com.br' },
     ],
   },
@@ -409,17 +394,6 @@ const en: typeof ptBR = {
     copyright: '© 2026 Squadworks · squadworks.com.br',
     tagline: 'Agentic software factory',
     founded: 'Founded October 2026',
-    changelog: 'Changelog',
-  },
-  changelog: {
-    path: '/en/changelog/',
-    title: 'Changelog — Squadworks',
-    description: 'A public, dated record of what Squadworks has published.',
-    eyebrow: 'Changelog',
-    heading: 'What changed, with dates.',
-    lead: 'A public record of what Squadworks has published, most recent first.',
-    note: 'Only public, verifiable facts go here.',
-    back: 'Back to home',
   },
 };
 
@@ -437,14 +411,4 @@ export function mailto(lang: Lang, kind: 'app' | 'idea' | 'any' = 'any') {
   const c = ui[lang].cta;
   const subject = kind === 'app' ? c.subjectApp : kind === 'idea' ? c.subjectIdea : c.subject;
   return `mailto:${c.email}?subject=${encodeURIComponent(subject)}`;
-}
-
-export function formatDate(iso: string, lang: Lang): string {
-  const locale = htmlLang[lang];
-  const [y, m, d] = iso.split('-').map(Number);
-  const date = new Date(Date.UTC(y, (m || 1) - 1, d || 1, 12));
-  const opts: Intl.DateTimeFormatOptions = d
-    ? { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }
-    : { year: 'numeric', month: 'long', timeZone: 'UTC' };
-  return new Intl.DateTimeFormat(locale, opts).format(date).replace(/\.$/, '');
 }

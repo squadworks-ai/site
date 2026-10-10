@@ -24,6 +24,6 @@ Consult these guides before working on related tasks:
 ## Squadworks
 
 - Todo o texto, nas duas línguas, está em `src/i18n/ui.ts`. O objeto `en` tem o mesmo formato de `ptBR`; qualquer mudança de copy precisa ser feita nas duas.
-- Registro de mudanças em `src/data/changelog.ts` (só fatos públicos, com data) e dados da organização em `src/data/org.ts`.
+- Dados da organização usados nos metadados em `src/data/org.ts`.
 - A animação da esteira fica em `src/components/Harness.astro`; respeita `prefers-reduced-motion` e pausa fora da tela.
 - Depois de mudar: `npm run build`, conferir em 390, 820 e 1440 px nas duas línguas, e publicar conforme o `README.md`.
