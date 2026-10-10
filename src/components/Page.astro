@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from './Nav.astro';
+import Hero from './Hero.astro';
+import Problem from './Problem.astro';
+import How from './How.astro';
+import Factory from './Factory.astro';
+import Example from './Example.astro';
+import Cta from './Cta.astro';
+import Footer from './Footer.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<Base lang={lang}>
+  <Nav lang={lang} />
+  <main id="main">
+    <Hero lang={lang} />
+    <Problem lang={lang} />
+    <How lang={lang} />
+    <Factory lang={lang} />
+    <Example lang={lang} />
+    <Cta lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Base>

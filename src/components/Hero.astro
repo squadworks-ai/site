@@ -1,0 +1,26 @@
+---
+import Harness from './Harness.astro';
+import { t, mailto, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = t(lang);
+---
+
+<section id="topo" class="wrap flex flex-col items-center gap-7 pt-16 pb-12 text-center md:pt-24 md:pb-14">
+  <p class="eyebrow text-muted">{s.hero.eyebrow}</p>
+  <h1 class="display max-w-[960px]">
+    {s.hero.title[0]}<br />{s.hero.title[1]}
+  </h1>
+  <p class="max-w-[680px] text-[18px] leading-[1.45] text-muted md:text-[20px]">{s.hero.lead}</p>
+  <div class="mt-2 flex flex-wrap justify-center gap-3">
+    <a href={mailto(lang, 'app')} class="btn">{s.hero.cta}</a>
+    <a href={mailto(lang, 'idea')} class="btn btn-ghost">{s.hero.secondary}</a>
+  </div>
+</section>
+
+<section id="esteira" class="wrap pb-24 md:pb-32">
+  <Harness lang={lang} />
+</section>

@@ -1,0 +1,40 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const f = t(lang).factory;
+---
+
+<section id="fabrica" class="wrap flex flex-col gap-10 pb-24 md:pb-32">
+  <div class="flex max-w-[760px] flex-col gap-3.5">
+    <p class="eyebrow text-amber">{f.eyebrow}</p>
+    <h2 class="h2">{f.title}</h2>
+    <p class="text-[17px] leading-[1.5] text-muted md:text-[18px]">{f.lead}</p>
+  </div>
+
+  <ol class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5" role="list">
+    {
+      f.rungs.map((r) => (
+        <li class={`flex flex-col gap-1.5 border-t-2 pt-4 ${r.hot ? 'border-amber' : 'border-line'}`}>
+          <span class={`label ${r.hot ? 'text-amber' : 'text-muted'}`}>{r.n}</span>
+          <strong class="text-[16px] font-semibold">{r.title}</strong>
+          <span class="text-[13px] leading-[1.45] text-muted">{r.text}</span>
+        </li>
+      ))
+    }
+  </ol>
+
+  <ul class="grid grid-cols-1 gap-4 md:grid-cols-3" role="list">
+    {
+      f.cards.map((c) => (
+        <li class="card flex flex-col gap-2 p-5.5">
+          <strong class="text-[16px] font-semibold">{c.title}</strong>
+          <span class="text-[14px] leading-[1.5] text-muted">{c.text}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>

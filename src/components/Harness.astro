@@ -1,0 +1,801 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const h = t(lang).harness;
+---
+
+<figure
+  class="harness"
+  data-harness
+  data-stations={JSON.stringify(h.stations)}
+  data-now-prefix={h.nowPrefix}
+  aria-label={h.alt}
+>
+  <p class="sr-only">{h.alt}</p>
+
+  <div class="inner" aria-hidden="true">
+    <div class="hbar">
+      <span class="label text-frame-muted">{h.bar}</span>
+      <span class="clock" data-clock>00:00</span>
+      <span class="label tag">{h.example}</span>
+    </div>
+
+    <ol class="rail">
+      {
+        h.stations.map((name, i) => (
+          <>
+            {i > 0 && <li class="seg" data-seg={i}></li>}
+            <li class="station" data-station={i + 1}>
+              <span class="dot">{i + 1}</span>
+              <span class="lbl">{name}</span>
+            </li>
+          </>
+        ))
+      }
+    </ol>
+    <p class="now" data-now></p>
+
+    <div class="hgrid">
+      <section class="panel">
+        <h4
+          class="label text-frame-muted"
+          data-count-label
+          data-idle={h.findingsIdle}
+          data-found={h.findingsFound}
+          data-resolved={h.findingsResolved}
+        >
+          {h.findingsIdle}
+        </h4>
+        <ul class="findings">
+          {
+            h.findings.map((f, i) => (
+              <li class="finding" data-finding={i + 1} data-level={f.level}>
+                <span class="mark"></span>
+                <span class="txt">
+                  <span class="before">{f.before}</span>
+                  <span class="after">{f.after}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="more" data-more>{h.more}</p>
+        <p class="plan" data-plan>{h.plan}</p>
+      </section>
+
+      <section class="panel app" data-card>
+        <h4 class="label text-frame-muted">{h.appLabel}</h4>
+        <p class="appname">
+          {h.appName}<span class="text-frame-muted font-normal"> · {h.appStack}</span>
+        </p>
+        <p class="appnote" data-appnote>{h.appNote}</p>
+        <ul class="ints">
+          {h.integrations.map((name, i) => <li class="chip int" data-int={i + 1}>{name}</li>)}
+        </ul>
+        <p class="appfoot" data-appfoot>{h.appFoot}</p>
+      </section>
+
+      <section class="panel gate">
+        <h4 class="label gatelbl">{h.gateLabel}</h4>
+        <ul class="checks">
+          {
+            h.checks.map(([k, v], i) => (
+              <li class="check" data-check={i + 1}>
+                <span>{k}</span>
+                <span class="val">{v}</span>
+              </li>
+            ))
+          }
+          <li class="check human" data-check="6">
+            <span>{h.humanMinutes}</span>
+            <span class="val">{h.humanValue}</span>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="hfoot">
+      <span class="label text-frame-muted">{h.clicks}</span>
+      <div class="btns">
+        <span class="hbtn" data-btn="accept" data-idle={h.accept} data-done={h.accepted}>{h.accept}</span>
+        <span class="hbtn primary" data-btn="publish" data-idle={h.publish} data-done={h.published}>{h.publish} →</span>
+      </div>
+      <span class="live" data-live>● {h.live}</span>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .harness {
+    margin: 0;
+    background: var(--color-frame);
+    color: var(--color-ground);
+    border-radius: 20px;
+    padding: clamp(18px, 3vw, 36px);
+    box-shadow: 0 30px 80px rgba(14, 14, 12, 0.18);
+    --t: 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .inner {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .hbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .clock {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-frame-muted);
+    letter-spacing: 0.08em;
+  }
+  .tag {
+    color: var(--color-frame-muted);
+    border: 1px solid var(--color-frame-line);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  /* rail */
+  .rail {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-start;
+  }
+  .station {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 112px;
+    flex: 0 0 auto;
+  }
+  .dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 13px;
+    border: 1px solid var(--color-frame-line);
+    color: var(--color-muted);
+    background: var(--color-frame);
+    transition: all var(--t);
+  }
+  .lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-frame-muted);
+    text-align: center;
+    transition: color var(--t);
+  }
+  .seg {
+    flex: 1 1 0;
+    height: 2px;
+    margin-top: 17px;
+    background: var(--color-frame-line);
+    transition: background-color var(--t);
+  }
+  .seg.is-on {
+    background: var(--color-amber-bright);
+  }
+  .seg.is-green {
+    background: var(--color-green-bright);
+  }
+  .station.is-active .dot {
+    border: 2px solid var(--color-amber-bright);
+    color: var(--color-amber-bright);
+    box-shadow: 0 0 0 6px rgba(232, 134, 46, 0.18);
+  }
+  .station.is-active .lbl {
+    color: var(--color-amber-bright);
+  }
+  .station.is-done .dot {
+    background: var(--color-ground);
+    color: var(--color-frame);
+    border-color: var(--color-ground);
+  }
+  .station.is-live .dot {
+    background: var(--color-green-bright);
+    color: var(--color-frame);
+    border-color: var(--color-green-bright);
+    box-shadow: 0 0 0 8px rgba(63, 176, 110, 0.22);
+  }
+  .station.is-live .lbl {
+    color: var(--color-green-bright);
+  }
+  .now {
+    display: none;
+    margin: -16px 0 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-amber-bright);
+  }
+
+  /* panels */
+  .hgrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    align-items: stretch;
+  }
+  .panel {
+    border: 1px solid var(--color-frame-line);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 320px;
+  }
+  .panel h4 {
+    margin: 0;
+    font-weight: 500;
+  }
+  .findings {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .finding {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.35;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity var(--t), transform var(--t);
+  }
+  .finding.is-in {
+    opacity: 1;
+    transform: none;
+  }
+  .finding .mark {
+    flex: 0 0 auto;
+    margin-top: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--color-frame-muted);
+    transition: background-color var(--t);
+  }
+  .finding[data-level='crit'] .mark {
+    background: var(--color-red);
+  }
+  .finding[data-level='high'] .mark {
+    background: var(--color-amber-bright);
+  }
+  .finding .txt {
+    display: flex;
+    flex-direction: column;
+  }
+  .finding .after {
+    display: none;
+  }
+  .finding.is-fixed .mark {
+    background: var(--color-green-bright);
+    border-radius: 50%;
+  }
+  .finding.is-fixed .before {
+    color: var(--color-frame-muted);
+    text-decoration: line-through;
+  }
+  .finding.is-fixed .after {
+    display: block;
+  }
+  .more,
+  .plan {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-frame-muted);
+    opacity: 0;
+    transition: opacity var(--t);
+  }
+  .plan {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-frame-line);
+    color: var(--color-ground);
+  }
+  .more.is-in,
+  .plan.is-in {
+    opacity: 1;
+  }
+
+  .app {
+    border-color: var(--color-frame-line);
+    transition: border-color var(--t), background-color var(--t), transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1), opacity 600ms ease;
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  .app.is-in {
+    opacity: 1;
+    transform: none;
+  }
+  .app.is-hot {
+    border-color: var(--color-amber-bright);
+    background: rgba(232, 134, 46, 0.06);
+  }
+  .app.is-live {
+    border-color: var(--color-green-bright);
+    background: rgba(63, 176, 110, 0.06);
+  }
+  .appname {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .appnote,
+  .appfoot {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--color-frame-muted);
+    transition: opacity var(--t);
+  }
+  .appfoot {
+    margin-top: auto;
+    opacity: 0;
+  }
+  .appfoot.is-in {
+    opacity: 1;
+  }
+  .appnote.is-out {
+    opacity: 0;
+  }
+  .ints {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .int {
+    border-color: var(--color-frame-line);
+    color: var(--color-muted);
+    transition: all var(--t);
+  }
+  .int.is-on {
+    border-color: var(--color-green-bright);
+    color: var(--color-green-bright);
+  }
+  .int.is-on::after {
+    content: ' ✓';
+  }
+
+  .gatelbl {
+    color: var(--color-frame-muted);
+    transition: color var(--t);
+  }
+  .gate.is-active .gatelbl {
+    color: var(--color-amber-bright);
+  }
+  .checks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .check {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--color-muted);
+    transition: color var(--t);
+  }
+  .check .val {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-green-bright);
+    opacity: 0;
+    transition: opacity var(--t);
+  }
+  .check.is-on {
+    color: var(--color-ground);
+  }
+  .check.is-on .val {
+    opacity: 1;
+  }
+  .check.human {
+    border-top: 1px solid var(--color-frame-line);
+    padding-top: 12px;
+    margin-top: 2px;
+  }
+  .check.human .val {
+    color: var(--color-ground);
+  }
+
+  /* foot */
+  .hfoot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--color-frame-line);
+    padding-top: 24px;
+  }
+  .btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hbtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--color-frame-line);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-frame-muted);
+    transition: all var(--t);
+  }
+  .hbtn.is-hot {
+    border-color: var(--color-amber-bright);
+    background: var(--color-amber-bright);
+    color: var(--color-frame);
+    font-weight: 500;
+    animation: pulse 1.1s ease-in-out infinite;
+  }
+  .hbtn.is-press {
+    transform: scale(0.96);
+    animation: none;
+  }
+  .hbtn.is-done {
+    border-color: var(--color-green-bright);
+    color: var(--color-green-bright);
+    background: transparent;
+    animation: none;
+  }
+  .hbtn.is-done::after {
+    content: ' ✓';
+  }
+  .live {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-green-bright);
+    opacity: 0;
+    transition: opacity var(--t);
+  }
+  .live.is-on {
+    opacity: 1;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(232, 134, 46, 0.35);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(232, 134, 46, 0);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .hgrid {
+      grid-template-columns: 1fr;
+    }
+    .panel {
+      min-height: 0;
+    }
+    .station {
+      width: auto;
+      flex: 0 0 auto;
+    }
+    .lbl {
+      display: none;
+    }
+    .dot {
+      width: 30px;
+      height: 30px;
+      font-size: 12px;
+    }
+    .seg {
+      margin-top: 14px;
+    }
+    .now {
+      display: block;
+    }
+    .plan {
+      margin-top: 4px;
+    }
+    .appfoot {
+      margin-top: 4px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .harness * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-harness]');
+
+  if (root) {
+    const all = <T extends Element>(sel: string) => Array.from(root.querySelectorAll<T>(sel));
+    const one = <T extends Element>(sel: string) => root.querySelector<T>(sel);
+
+    const stations = all<HTMLElement>('[data-station]');
+    const segs = all<HTMLElement>('[data-seg]');
+    const findings = all<HTMLElement>('[data-finding]');
+    const ints = all<HTMLElement>('[data-int]');
+    const checks = all<HTMLElement>('[data-check]');
+    const more = one<HTMLElement>('[data-more]');
+    const plan = one<HTMLElement>('[data-plan]');
+    const card = one<HTMLElement>('[data-card]');
+    const appnote = one<HTMLElement>('[data-appnote]');
+    const appfoot = one<HTMLElement>('[data-appfoot]');
+    const gate = checks[0]?.closest<HTMLElement>('.gate') ?? null;
+    const accept = one<HTMLElement>('[data-btn="accept"]');
+    const publish = one<HTMLElement>('[data-btn="publish"]');
+    const live = one<HTMLElement>('[data-live]');
+    const countLabel = one<HTMLElement>('[data-count-label]');
+    const clock = one<HTMLElement>('[data-clock]');
+    const now = one<HTMLElement>('[data-now]');
+    const testVal = checks[0]?.querySelector<HTMLElement>('.val') ?? null;
+
+    const names: string[] = JSON.parse(root.dataset.stations || '[]');
+    const nowPrefix = root.dataset.nowPrefix || '';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let timers: number[] = [];
+    let ticker = 0;
+    let raf = 0;
+    let start = 0;
+    let running = false;
+
+    const at = (ms: number, fn: () => void) => {
+      timers.push(window.setTimeout(fn, ms));
+    };
+
+    const setStation = (i: number, state: 'active' | 'done' | 'live' | null) => {
+      const el = stations[i];
+      if (!el) return;
+      el.classList.remove('is-active', 'is-done', 'is-live');
+      if (state) el.classList.add(`is-${state}`);
+      if (state === 'active' && now) now.textContent = `${nowPrefix} ${i + 1} · ${names[i] ?? ''}`;
+      if (state === 'live' && now) now.textContent = `${nowPrefix} ${i + 1} · ${names[i] ?? ''}`;
+    };
+
+    const seg = (i: number, cls: 'is-on' | 'is-green' | null) => {
+      const el = segs[i];
+      if (!el) return;
+      el.classList.remove('is-on', 'is-green');
+      if (cls) el.classList.add(cls);
+    };
+
+    const setBtn = (el: HTMLElement | null, state: 'idle' | 'hot' | 'press' | 'done') => {
+      if (!el) return;
+      el.classList.remove('is-hot', 'is-press', 'is-done');
+      if (state === 'idle') el.textContent = el.dataset.idle || '';
+      if (state === 'hot') {
+        el.classList.add('is-hot');
+        el.textContent = el.dataset.idle || '';
+      }
+      if (state === 'press') el.classList.add('is-hot', 'is-press');
+      if (state === 'done') {
+        el.classList.add('is-done');
+        el.textContent = el.dataset.done || '';
+      }
+    };
+
+    const countTests = (ms: number) => {
+      if (!testVal) return;
+      const target = 142;
+      const t0 = performance.now();
+      const step = (t: number) => {
+        const p = Math.min(1, (t - t0) / ms);
+        const eased = 1 - Math.pow(1 - p, 3);
+        testVal.textContent = `${Math.round(eased * target)} / ${target}`;
+        if (p < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    };
+
+    const reset = () => {
+      timers.forEach((id) => clearTimeout(id));
+      timers = [];
+      cancelAnimationFrame(raf);
+      stations.forEach((_, i) => setStation(i, null));
+      segs.forEach((_, i) => seg(i, null));
+      findings.forEach((f) => f.classList.remove('is-in', 'is-fixed'));
+      ints.forEach((c) => c.classList.remove('is-on'));
+      checks.forEach((c) => c.classList.remove('is-on'));
+      more?.classList.remove('is-in');
+      plan?.classList.remove('is-in');
+      card?.classList.remove('is-in', 'is-hot', 'is-live');
+      appnote?.classList.remove('is-out');
+      appfoot?.classList.remove('is-in');
+      gate?.classList.remove('is-active');
+      setBtn(accept, 'idle');
+      setBtn(publish, 'idle');
+      live?.classList.remove('is-on');
+      if (countLabel) countLabel.textContent = countLabel.dataset.idle || '';
+      if (testVal) testVal.textContent = '0 / 142';
+      if (now) now.textContent = '';
+    };
+
+    const finalState = () => {
+      reset();
+      stations.forEach((_, i) => setStation(i, i === 6 ? 'live' : 'done'));
+      segs.forEach((_, i) => seg(i, i === 5 ? 'is-green' : 'is-on'));
+      findings.forEach((f) => f.classList.add('is-in', 'is-fixed'));
+      ints.forEach((c) => c.classList.add('is-on'));
+      checks.forEach((c) => c.classList.add('is-on'));
+      more?.classList.add('is-in');
+      plan?.classList.add('is-in');
+      card?.classList.add('is-in', 'is-live');
+      appnote?.classList.add('is-out');
+      appfoot?.classList.add('is-in');
+      setBtn(accept, 'done');
+      setBtn(publish, 'done');
+      live?.classList.add('is-on');
+      if (countLabel) countLabel.textContent = countLabel.dataset.resolved || '';
+      if (testVal) testVal.textContent = '142 / 142';
+      if (clock) clock.textContent = '00:12';
+    };
+
+    const run = () => {
+      reset();
+      running = true;
+      start = performance.now();
+
+      // 1 · entrada
+      at(100, () => {
+        card?.classList.add('is-in');
+        setStation(0, 'active');
+      });
+
+      // 2 · diagnóstico
+      at(1800, () => {
+        setStation(0, 'done');
+        seg(0, 'is-on');
+        setStation(1, 'active');
+        card?.classList.add('is-hot');
+      });
+      at(2300, () => findings[0]?.classList.add('is-in'));
+      at(2800, () => findings[1]?.classList.add('is-in'));
+      at(3300, () => findings[2]?.classList.add('is-in'));
+      at(3800, () => {
+        more?.classList.add('is-in');
+        if (countLabel) countLabel.textContent = countLabel.dataset.found || '';
+      });
+
+      // 3 · aceitar plano (o clique do cliente)
+      at(4400, () => {
+        setStation(1, 'done');
+        seg(1, 'is-on');
+        plan?.classList.add('is-in');
+        setBtn(accept, 'hot');
+      });
+      at(5300, () => setBtn(accept, 'press'));
+      at(5450, () => setBtn(accept, 'done'));
+
+      // 4 · correção
+      at(5800, () => setStation(2, 'active'));
+      at(6200, () => findings[0]?.classList.add('is-fixed'));
+      at(6700, () => findings[1]?.classList.add('is-fixed'));
+      at(7200, () => {
+        findings[2]?.classList.add('is-fixed');
+        if (countLabel) countLabel.textContent = countLabel.dataset.resolved || '';
+      });
+
+      // 5 · testes
+      at(7600, () => {
+        setStation(2, 'done');
+        seg(2, 'is-on');
+        setStation(3, 'active');
+        checks[0]?.classList.add('is-on');
+        countTests(1300);
+      });
+
+      // 6 · integrações
+      at(9000, () => {
+        setStation(3, 'done');
+        seg(3, 'is-on');
+        setStation(4, 'active');
+        appnote?.classList.add('is-out');
+      });
+      ints.forEach((c, i) => at(9200 + i * 320, () => c.classList.add('is-on')));
+      at(10800, () => appfoot?.classList.add('is-in'));
+
+      // 7 · portão
+      at(11200, () => {
+        setStation(4, 'done');
+        seg(4, 'is-on');
+        setStation(5, 'active');
+        gate?.classList.add('is-active');
+      });
+      [1, 2, 3, 4, 5].forEach((i, k) => at(11400 + k * 260, () => checks[i]?.classList.add('is-on')));
+      at(12800, () => setBtn(publish, 'hot'));
+
+      // 8 · publicar (o segundo clique) e produção
+      at(13900, () => setBtn(publish, 'press'));
+      at(14050, () => {
+        setBtn(publish, 'done');
+        setStation(5, 'done');
+        seg(5, 'is-green');
+        setStation(6, 'live');
+        gate?.classList.remove('is-active');
+        card?.classList.remove('is-hot');
+        card?.classList.add('is-live');
+        live?.classList.add('is-on');
+      });
+
+      // loop
+      at(17000, run);
+    };
+
+    const stop = () => {
+      running = false;
+      timers.forEach((id) => clearTimeout(id));
+      timers = [];
+      cancelAnimationFrame(raf);
+    };
+
+    const tick = () => {
+      if (!clock) return;
+      const s = running ? Math.min(99, Math.floor((performance.now() - start) / 1000)) : 0;
+      clock.textContent = `00:${String(s).padStart(2, '0')}`;
+    };
+
+    if (reduce) {
+      finalState();
+    } else {
+      ticker = window.setInterval(tick, 250);
+      const io = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.some((e) => e.isIntersecting);
+          if (visible && !running) run();
+          if (!visible && running) stop();
+        },
+        { threshold: 0.15 }
+      );
+      io.observe(root);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && running) stop();
+        else if (!document.hidden && !running) run();
+      });
+      window.addEventListener('pagehide', () => {
+        stop();
+        clearInterval(ticker);
+      });
+    }
+  }
+</script>

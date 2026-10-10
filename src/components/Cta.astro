@@ -1,0 +1,26 @@
+---
+import { t, mailto, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang).cta;
+---
+
+<section class="wrap pb-20 md:pb-24">
+  <div class="flex flex-col items-start gap-5 rounded-[20px] bg-ink p-8 text-ground md:p-16">
+    <p class="eyebrow text-amber-bright">{c.eyebrow}</p>
+    <h2 class="h2 max-w-[760px] text-[32px] md:text-[52px]">{c.title}</h2>
+    <div class="flex flex-wrap items-center gap-3">
+      <a href={mailto(lang, 'app')} class="btn btn-light">{c.app}</a>
+      <a
+        href={mailto(lang, 'idea')}
+        class="btn border-ground bg-transparent text-ground hover:border-amber-bright hover:bg-amber-bright hover:text-frame"
+      >
+        {c.idea}
+      </a>
+      <a href={mailto(lang)} class="font-mono text-[13px] text-frame-muted hover:text-ground">{c.email}</a>
+    </div>
+  </div>
+</section>

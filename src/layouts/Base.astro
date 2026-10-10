@@ -1,0 +1,114 @@
+---
+import '../styles/global.css';
+import { t, htmlLang, localePath, otherLang, type Lang } from '../i18n/ui';
+import { org } from '../data/org';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  /** Caminho desta página em cada idioma (padrão: página inicial). */
+  paths?: Record<Lang, string>;
+}
+
+const { lang, paths = localePath } = Astro.props;
+const s = t(lang);
+const title = Astro.props.title ?? s.meta.title;
+const description = Astro.props.description ?? s.meta.description;
+const site = Astro.site?.href ?? 'https://squadworks.com.br/';
+const canonical = new URL(paths[lang], site).href;
+const ptUrl = new URL(paths['pt-br'], site).href;
+const enUrl = new URL(paths.en, site).href;
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: org.name,
+  url: org.url,
+  logo: org.logo,
+  email: org.email,
+  foundingDate: org.foundingDate,
+  description: s.meta.description,
+  areaServed: 'BR',
+  ...(org.sameAs.length ? { sameAs: org.sameAs } : {}),
+});
+const ogImage = new URL(lang === 'pt-br' ? '/og.png' : '/og-en.png', site).href;
+const ogLocale = lang === 'pt-br' ? 'pt_BR' : 'en_US';
+const ogAlt = lang === 'pt-br' ? 'en_US' : 'pt_BR';
+---
+
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="pt-BR" href={ptUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={ptUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#f3f2ee" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Squadworks" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={jsonLd} />
+    <script is:inline>
+      (function () {
+        try {
+          if (localStorage.getItem('sw-lang')) return;
+          var p = location.pathname;
+          if (p !== '/' && p !== '/index.html') return;
+          var l = (navigator.language || '').toLowerCase();
+          if (l.indexOf('en') === 0) location.replace('/en/');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main" class="skip">{s.meta.skip}</a>
+    <slot />
+    <script>
+      document.querySelectorAll<HTMLAnchorElement>('[data-lang-switch]').forEach((a) => {
+        a.addEventListener('click', () => {
+          try {
+            localStorage.setItem('sw-lang', a.dataset.langSwitch || '');
+          } catch {
+            /* storage unavailable */
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .skip {
+    position: absolute;
+    left: 16px;
+    top: -60px;
+    z-index: 100;
+    padding: 10px 14px;
+    border-radius: 6px;
+    background: var(--color-ink);
+    color: var(--color-ground);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    transition: top 120ms ease;
+  }
+  .skip:focus {
+    top: 12px;
+  }
+</style>

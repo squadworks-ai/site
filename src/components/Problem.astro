@@ -1,0 +1,41 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const p = t(lang).problem;
+---
+
+<section id="problema" class="wrap flex flex-col gap-10 pb-24 md:pb-32">
+  <div class="flex max-w-[760px] flex-col gap-3.5">
+    <p class="eyebrow text-amber">{p.eyebrow}</p>
+    <h2 class="h2">{p.title}</h2>
+    <p class="text-[17px] leading-[1.5] text-muted md:text-[18px]">{p.lead}</p>
+  </div>
+
+  <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+    {
+      p.cards.map((c) => (
+        <li class="card flex flex-col gap-2.5 p-6">
+          <span class="label text-muted">{c.tag}</span>
+          <strong class="text-[18px] font-semibold leading-[1.25]">{c.title}</strong>
+          <p class="text-[14px] leading-[1.5] text-muted">{c.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="flex flex-col gap-5 rounded-xl border border-ink p-6 md:p-7">
+    <div class="flex flex-wrap items-center justify-between gap-5">
+      <strong class="text-[20px] font-semibold tracking-[-0.01em] md:text-[22px]">{p.bandTitle}</strong>
+      <p class="max-w-[680px] text-[15px] leading-[1.45] text-muted md:text-[16px]">{p.bandText}</p>
+    </div>
+    <ul class="flex flex-wrap items-center gap-2 border-t border-line pt-4" role="list" aria-label={p.ecosystemLabel}>
+      <li class="label mr-2 text-muted">{p.ecosystemLabel}</li>
+      {p.ecosystem.map((name) => <li class="chip">{name}</li>)}
+      <li class="chip border-dashed text-muted">{p.ecosystemMore}</li>
+    </ul>
+  </div>
+</section>

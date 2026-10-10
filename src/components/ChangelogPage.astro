@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from './Nav.astro';
+import Footer from './Footer.astro';
+import { t, formatDate, localePath, type Lang } from '../i18n/ui';
+import { changelog } from '../data/changelog';
+import { ui } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang).changelog;
+const paths: Record<Lang, string> = { 'pt-br': ui['pt-br'].changelog.path, en: ui.en.changelog.path };
+---
+
+<Base lang={lang} title={c.title} description={c.description} paths={paths}>
+  <Nav lang={lang} paths={paths} />
+  <main id="main">
+    <section class="wrap pt-14 pb-20 md:pt-20 md:pb-28">
+      <p class="eyebrow text-amber">{c.eyebrow}</p>
+      <h1 class="h2 mt-3 max-w-[760px]">{c.heading}</h1>
+      <p class="mt-4 max-w-[640px] text-[17px] leading-relaxed text-muted">{c.lead}</p>
+
+      <ol class="mt-12 max-w-[800px] divide-y divide-line border-t border-line">
+        {
+          changelog.map((e) => (
+            <li class="grid gap-1.5 py-5 md:grid-cols-[150px_1fr] md:gap-8">
+              <time datetime={e.date} class="label pt-[3px] text-muted">
+                {formatDate(e.date, lang)}
+              </time>
+              <p class="text-[16px] leading-relaxed">{e[lang]}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="mt-10 font-mono text-[12px] text-muted">{c.note}</p>
+      <a href={localePath[lang]} class="btn btn-ghost mt-8">{c.back}</a>
+    </section>
+  </main>
+  <Footer lang={lang} paths={paths} />
+</Base>

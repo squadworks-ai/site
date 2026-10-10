@@ -1,0 +1,24 @@
+---
+interface Props {
+  size?: number;
+  tone?: 'ink' | 'light';
+  class?: string;
+}
+const { size = 26, tone = 'ink', class: className = '' } = Astro.props;
+const fg = tone === 'ink' ? '#0E0E0C' : '#F3F2EE';
+const accent = tone === 'ink' ? '#C9651B' : '#E8862E';
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 26 26"
+  fill="none"
+  aria-hidden="true"
+  class={className}
+>
+  <rect x="1.5" y="1.5" width="10" height="10" fill={fg}></rect>
+  <rect x="14.5" y="1.5" width="10" height="10" stroke={fg} stroke-width="1.5"></rect>
+  <rect x="1.5" y="14.5" width="10" height="10" stroke={fg} stroke-width="1.5"></rect>
+  <rect x="14.5" y="14.5" width="10" height="10" fill={accent}></rect>
+</svg>

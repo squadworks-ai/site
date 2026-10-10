@@ -1,0 +1,22 @@
+---
+import { t, localePath, otherLang, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  /** Caminho desta página em cada idioma, para a troca de idioma (padrão: página inicial). */
+  paths?: Record<Lang, string>;
+}
+const { lang, paths = localePath } = Astro.props;
+const s = t(lang);
+const other = otherLang(lang);
+---
+
+<footer class="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-line pt-6 pb-10 font-mono text-[12px] text-muted">
+  <span>{s.footer.copyright}</span>
+  <span>{s.footer.founded}</span>
+  <span>{s.footer.tagline}</span>
+  <a href={s.changelog.path} class="hover:text-ink">{s.footer.changelog}</a>
+  <a href={paths[other]} data-lang-switch={other} aria-label={s.nav.switchLabel} class="tracking-[0.08em] hover:text-ink">
+    <span class="font-medium text-ink">{s.nav.current}</span> / {s.nav.switchShort}
+  </a>
+</footer>

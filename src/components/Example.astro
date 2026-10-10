@@ -1,0 +1,60 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const e = t(lang).example;
+
+const levelClass: Record<string, string> = {
+  crit: 'bg-red text-white',
+  high: 'bg-amber text-white',
+  med: 'bg-soft text-ink',
+};
+---
+
+<section id="exemplo" class="wrap flex flex-col gap-10 pb-24 md:pb-32">
+  <div class="flex max-w-[760px] flex-col gap-3.5">
+    <p class="eyebrow text-amber">{e.eyebrow}</p>
+    <h2 class="h2">{e.title}</h2>
+  </div>
+
+  <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+    <article class="card flex flex-col gap-4 p-6">
+      <header class="flex items-center justify-between gap-3">
+        <span class="label text-muted">{e.reportLabel}</span>
+        <span class="chip text-[10px] text-muted">{e.exampleTag}</span>
+      </header>
+      <ul class="flex flex-col gap-3" role="list">
+        {
+          e.findings.map((f) => (
+            <li class="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3">
+              <span class={`label rounded px-1.5 py-1 text-center text-[10px] ${levelClass[f.level]}`}>
+                {e.levels[f.level as keyof typeof e.levels]}
+              </span>
+              <span class="text-[14px] leading-[1.45]">
+                <strong class="font-semibold">{f.title}</strong> {f.text}{' '}
+                <span class="font-mono text-[11px] whitespace-nowrap text-green">{e.proven}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <footer class="mt-auto border-t border-line pt-3 font-mono text-[12px] text-muted">{e.reportFoot}</footer>
+    </article>
+
+    <article class="flex flex-col gap-4 rounded-xl bg-frame p-6 text-ground">
+      <header class="flex items-center justify-between gap-3">
+        <span class="label text-frame-muted">{e.prLabel}</span>
+        <span class="chip border-frame-line text-[10px] text-frame-muted">{e.exampleTag}</span>
+      </header>
+      <strong class="text-[17px] font-semibold leading-[1.3] md:text-[18px]">{e.prTitle}</strong>
+      <pre
+        class="overflow-x-auto rounded-lg border border-frame-line bg-frame-deep p-3.5 font-mono text-[12px] leading-[1.6] text-frame-muted">{e.prCode}</pre>
+      <ul class="flex flex-wrap gap-4 font-mono text-[12px] text-green-bright" role="list">
+        {e.prChecks.map((c) => <li>✓ {c}</li>)}
+      </ul>
+    </article>
+  </div>
+</section>
